@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nobel Prize Explorer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-nobel shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <span class="text-warning">★</span> Nobel Prize Explorer
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        
+        <!-- Search & Filter Section -->
+        <div class="row mb-5 justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-4 text-center font-serif">Find Laureates</h4>
+                        <form id="filterForm" class="row g-3">
+                            <div class="col-md-4">
+                                <label for="year" class="form-label">Year</label>
+                                <input type="number" class="form-control" id="year" placeholder="e.g. 2023" min="1901">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="category" class="form-label">Category</label>
+                                <select id="category" class="form-select">
+                                    <option value="">All Categories</option>
+                                    <option value="phy">Physics</option>
+                                    <option value="che">Chemistry</option>
+                                    <option value="med">Medicine</option>
+                                    <option value="lit">Literature</option>
+                                    <option value="peace">Peace</option>
+                                    <option value="eco">Economics</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-nobel w-100 fw-bold">Search Prizes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="text-center d-none">
+            <div class="spinner-border text-nobel" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Fetching Nobel history...</p>
+        </div>
+
+        <!-- Results Grid -->
+        <div id="results" class="row g-4">
+            <!-- Cards will be injected here by JS -->
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
