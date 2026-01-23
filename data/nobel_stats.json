@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "timestamp": "2026-01-23T10:32:35.716Z",
+    "configUsed": {
+      "nobelPrizeYear": 2023,
+      "nobelPrizeCategory": "phy"
+    }
+  },
+  "stats": {
+    "totalPrizes": 1,
+    "prizesByCategory": {
+      "Physics": 1
+    },
+    "totalLaureates": 3,
+    "totalPrizeAmount": 11000000,
+    "averagePrizeAmount": 11000000
+  },
+  "rawData": [
+    {
+      "year": "2023",
+      "category": "Physics",
+      "dateAwarded": "2023-10-03",
+      "prizeAmount": 11000000,
+      "winners": [
+        {
+          "id": "1026",
+          "name": "Pierre Agostini",
+          "motivation": "for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter",
+          "share": "1/3"
+        },
+        {
+          "id": "1027",
+          "name": "Ferenc Krausz",
+          "motivation": "for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter",
+          "share": "1/3"
+        },
+        {
+          "id": "1028",
+          "name": "Anne L’Huillier",
+          "motivation": "for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter",
+          "share": "1/3"
+        }
+      ]
+    }
+  ]
+}

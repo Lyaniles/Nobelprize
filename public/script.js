@@ -21,7 +21,7 @@ async function fetchPrizes(year, category) {
     try {
         const params = new URLSearchParams();
         if (year) params.append('nobelPrizeYear', year);
-        if (category) params.append('category', category);
+        if (category) params.append('nobelPrizeCategory', category);
         // Limit to 20 to keep it snappy
         params.append('limit', 20);
 

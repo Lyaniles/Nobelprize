@@ -1,0 +1,8 @@
+{
+  "apiBaseUrl": "https://api.nobelprize.org/2.1",
+  "outputDir": "data",
+  "outputFile": "nobel_stats.json",
+  "logLevel": "info",
+  "year": null,
+  "category": null
+}

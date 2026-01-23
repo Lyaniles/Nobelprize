@@ -1,9 +1,7 @@
 const axios = require('axios');
-const dotenv = require('dotenv');
+const config = require('../utils/config');
 
-dotenv.config();
-
-const BASE_URL = process.env.NOBEL_API_BASE_URL;
+const BASE_URL = config.apiBaseUrl;
 
 const getPrizes = async (params = {}) => {
   try {

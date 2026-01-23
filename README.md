@@ -1,93 +1,96 @@
-# Nobel Prize Wrapper API
+# Nobel Prize Wrapper API & Analytics Tool
 
-A simple and efficient REST API wrapper for the official [Nobel Prize API (v2.1)](https://www.nobelprize.org/about/developer-zone-2/). This project serves as a proxy to interact with Nobel Prize data, providing information about prizes and laureates.
+A robust solution for interacting with the Nobel Prize API, featuring a REST API Wrapper, a Web Dashboard, and a CLI Analytics Tool.
 
-##  Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v14 or higher recommended)
-- [npm](https://www.npmjs.com/)
+- Node.js (v14+)
+- npm
 
 ### Installation
-
-1.  **Clone the repository:**
+1.  **Clone:**
     ```bash
     git clone https://github.com/Lyaniles/Nobelprize.git
     cd Nobelprize
     ```
-
-2.  **Install dependencies:**
+2.  **Install:**
     ```bash
     npm install
     ```
+3.  **Config:**
+    The project uses a hierarchical configuration system.
+    *   **Default:** `config/default.json`
+    *   **Env:** `.env` (overrides default)
+    *   **CLI:** Arguments (overrides env)
 
-3.  **Environment Setup:**
-    The project comes with a default configuration, but you can ensure your `.env` file is set up:
-    ```env
-    NOBEL_API_BASE_URL=https://api.nobelprize.org/2.1
-    PORT=3000
-    ```
+---
 
-### Running the Server
+## 🖥️ Web Server & Dashboard
 
-Start the application in development mode:
+Start the Express server to access the API and the GUI.
 
 ```bash
 npm start
 ```
 
-*   **API:** `http://localhost:3000/api/prizes`
-*   **Web Dashboard:** `http://localhost:3000/` (Open this in your browser!)
-
-The server will start on `http://localhost:3000`.
+*   **Dashboard:** `http://localhost:3000/` (Browse prizes visually)
+*   **API Endpoint:** `http://localhost:3000/api/prizes`
 
 ---
 
-##  API Endpoints
+## 📊 Analytics CLI Tool
 
-Here are the available endpoints you can interact with.
+We provide a dedicated script for fetching, analyzing, and storing Nobel Prize data.
 
-### Base Info
-*   **Get API Info:**
-    `http://localhost:3000/`
-    *   Returns basic API information and version.
+### Usage
+Run the analysis script via Node.js:
 
-### Prizes
-*   **Get Nobel Prizes:**
-    `http://localhost:3000/api/prizes`
-    *   Fetches a list of Nobel Prizes.
-    *   **Query Parameters:** (All standard Nobel API parameters are supported)
-        *   `limit`: Number of results (default: 25)
-        *   `offset`: Number of results to skip.
-        *   `sort`: Sort order (`asc` or `desc`).
-        *   `nobelPrizeYear`: Filter by specific year (e.g., `2023`).
-        *   `yearTo`: Filter range end year.
-        *   `category`: Filter by category (e.g., `phy`, `che`, `med`, `lit`, `peace`, `eco`).
+```bash
+node src/scripts/analyze.js [options]
+```
 
-    **Example:**
-    `http://localhost:3000/api/prizes?nobelPrizeYear=2020&category=peace`
+### Options
+*   `--year`: Filter by year (e.g., `2023`).
+*   `--category`: Filter by category (`phy`, `che`, `med`, `lit`, `peace`, `eco`).
+*   `--outputFile`: Specify output filename (default: `nobel_stats.json`).
+*   `--logLevel`: Set logging detail (`info`, `debug`, `error`).
 
-### Laureates
-*   **Get Laureates:**
-    `http://localhost:3000/api/laureates`
-    *   Fetches a list of Nobel Laureates (people and organizations).
-    *   **Query Parameters:**
-        *   `limit`: Number of results.
-        *   `offset`: Skip results.
-        *   `sort`: Sort order.
-        *   `ID`: Search by Laureate ID.
-        *   `bornDate`: Search by birth date.
+### Examples
 
-    **Example:**
-    `http://localhost:3000/api/laureates?limit=5`
+**1. Analyze Physics Prizes in 2023:**
+```bash
+node src/scripts/analyze.js --year=2023 --category=phy
+```
+
+**2. Analyze specific year and save to custom file:**
+```bash
+node src/scripts/analyze.js --year=2020 --outputFile="2020_analysis.json"
+```
+
+### Output
+The script will:
+1.  **Log** progress to the console and `combined.log`.
+2.  **Display** a summary table of statistics.
+3.  **Save** the detailed JSON result to `data/nobel_stats.json` (or specified file).
 
 ---
 
-##  Built With
+## ⚙️ Configuration
 
-*   **Node.js** - Runtime environment
-*   **Express** - Web framework
-*   **Axios** - HTTP client
-*   **Cors** - Cross-Origin Resource Sharing
-*   **Dotenv** - Environment variable management
+You can configure the application via `.env` variables or `config/default.json`.
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NOBEL_API_BASE_URL` | Official API URL | `https://api.nobelprize.org/2.1` |
+| `PORT` | Web Server Port | `3000` |
+| `LOG_LEVEL` | Logging verbosity | `info` |
+
+---
+
+## 🛠️ Tech Stack
+*   **Core:** Node.js, Express
+*   **CLI:** Yargs
+*   **Logging:** Winston
+*   **Data:** Axios, FS-Extra
+*   **UI:** HTML5, Bootstrap 5
