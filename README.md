@@ -109,4 +109,14 @@ You can configure the application via `.env` variables or `config/default.json`.
 *   **CLI:** Yargs
 *   **Logging:** Winston
 *   **Data:** Axios, FS-Extra
+*   **Caching:** Node-Cache (1-hour TTL)
 *   **UI:** HTML5, Bootstrap 5
+
+---
+
+##  Performance & Caching
+
+To ensure fast response times and reduce API load, the application implements in-memory caching.
+*   **TTL:** 1 hour (default).
+*   **Behavior:** Subsequent requests for the same prizes or laureates will be served instantly from memory.
+*   **Config:** Adjust `cacheTTL` in `config/default.json`.
