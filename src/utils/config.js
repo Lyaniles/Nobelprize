@@ -17,6 +17,7 @@ const argv = yargs(hideBin(process.argv))
   .option('category', { type: 'string', description: 'Filter by category' })
   .option('logLevel', { type: 'string', description: 'Set logging level' })
   .option('outputFile', { type: 'string', description: 'Output filename' })
+  .option('format', { type: 'string', description: 'Output format (json or csv)', default: 'json' })
   .help()
   .argv;
 
@@ -30,7 +31,8 @@ const getSetting = (key) => {
   const envMap = {
     'apiBaseUrl': 'NOBEL_API_BASE_URL',
     'logLevel': 'LOG_LEVEL',
-    'outputDir': 'OUTPUT_DIR'
+    'outputDir': 'OUTPUT_DIR',
+    'format': 'OUTPUT_FORMAT'
   };
   
   const envKey = envMap[key] || key.toUpperCase();
@@ -48,6 +50,8 @@ const config = {
   logLevel: getSetting('logLevel'),
   year: getSetting('year'),
   category: getSetting('category'),
+  format: getSetting('format'),
+  cacheTTL: getSetting('cacheTTL')
 };
 
 module.exports = config;

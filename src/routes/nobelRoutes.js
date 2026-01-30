@@ -33,4 +33,18 @@ router.get('/laureates', async (req, res) => {
   }
 });
 
+// GET /api/stats
+router.get('/stats', async (req, res) => {
+  try {
+    const data = await nobelService.getStatistics(req.query);
+    res.json(data);
+  } catch (error) {
+    console.error(`Error in GET /stats: ${error.message}`);
+    res.status(500).json({
+      error: 'Failed to generate statistics',
+      message: error.message
+    });
+  }
+});
+
 module.exports = router;

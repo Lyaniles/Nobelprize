@@ -35,6 +35,8 @@ npm start
 ```
 
 *   **Dashboard:** `http://localhost:3000/` (Browse prizes visually)
+    *   **New:** "Statistics" tab for visual insights.
+    *   **New:** "CSV Export" button to download search results.
 *   **API Endpoint:** `http://localhost:3000/api/prizes`
 
 ---
@@ -44,8 +46,16 @@ npm start
 We provide a dedicated script for fetching, analyzing, and storing Nobel Prize data.
 
 ### Usage
-Run the analysis script via Node.js:
+You can run the analysis tool using `npm` or `node`:
 
+**Interactive Wizard (Recommended):**
+Launch the interactive prompt to select your filters and output format:
+```bash
+npm run analyze
+```
+*(Or manually: `node src/scripts/analyze.js`)*
+
+**Direct Command (with options):**
 ```bash
 node src/scripts/analyze.js [options]
 ```
@@ -54,6 +64,7 @@ node src/scripts/analyze.js [options]
 *   `--year`: Filter by year (e.g., `2023`).
 *   `--category`: Filter by category (`phy`, `che`, `med`, `lit`, `peace`, `eco`).
 *   `--outputFile`: Specify output filename (default: `nobel_stats.json`).
+*   `--format`: Output format, `json` (default) or `csv`.
 *   `--logLevel`: Set logging detail (`info`, `debug`, `error`).
 
 ### Examples
@@ -63,7 +74,12 @@ node src/scripts/analyze.js [options]
 node src/scripts/analyze.js --year=2023 --category=phy
 ```
 
-**2. Analyze specific year and save to custom file:**
+**2. Export data to CSV:**
+```bash
+node src/scripts/analyze.js --year=2022 --format=csv
+```
+
+**3. Analyze specific year and save to custom file:**
 ```bash
 node src/scripts/analyze.js --year=2020 --outputFile="2020_analysis.json"
 ```
@@ -72,7 +88,7 @@ node src/scripts/analyze.js --year=2020 --outputFile="2020_analysis.json"
 The script will:
 1.  **Log** progress to the console and `combined.log`.
 2.  **Display** a summary table of statistics.
-3.  **Save** the detailed JSON result to `data/nobel_stats.json` (or specified file).
+3.  **Save** the detailed result to `data/nobel_stats.json` (or `.csv`).
 
 ---
 

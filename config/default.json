@@ -4,5 +4,6 @@
   "outputFile": "nobel_stats.json",
   "logLevel": "info",
   "year": null,
-  "category": null
+  "category": null,
+  "cacheTTL": 3600
 }

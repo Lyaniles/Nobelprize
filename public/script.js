@@ -1,11 +1,33 @@
 const API_URL = '/api/prizes';
+const STATS_URL = '/api/stats';
 
 const form = document.getElementById('filterForm');
 const resultsDiv = document.getElementById('results');
 const loadingDiv = document.getElementById('loading');
+const downloadCsvBtn = document.getElementById('downloadCsvBtn');
+
+// State
+let categoryChart = null;
+let currentPrizes = [];
 
 // Load initial data (latest prizes)
-document.addEventListener('DOMContentLoaded', () => fetchPrizes());
+document.addEventListener('DOMContentLoaded', () => {
+    fetchPrizes();
+    
+    // Tab event listener
+    const triggerTabList = [].slice.call(document.querySelectorAll('#viewTabs button'));
+    triggerTabList.forEach(function (triggerEl) {
+        triggerEl.addEventListener('shown.bs.tab', function (event) {
+            if (event.target.id === 'stats-tab') {
+                fetchStats();
+            }
+        });
+    });
+
+    if (downloadCsvBtn) {
+        downloadCsvBtn.addEventListener('click', downloadCSV);
+    }
+});
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -27,6 +49,8 @@ async function fetchPrizes(year, category) {
 
         const res = await fetch(`${API_URL}?${params.toString()}`);
         const data = await res.json();
+        
+        currentPrizes = data; // Store for export
 
         if (data.length === 0) {
             resultsDiv.innerHTML = '<div class="col-12 text-center text-muted">No prizes found for this criteria.</div>';
@@ -39,6 +63,87 @@ async function fetchPrizes(year, category) {
     } finally {
         showLoading(false);
     }
+}
+
+function downloadCSV() {
+    if (!currentPrizes || currentPrizes.length === 0) {
+        alert('No data to export!');
+        return;
+    }
+
+    const headers = ['Year', 'Category', 'Date Awarded', 'Prize Amount', 'Winners'];
+    const rows = currentPrizes.map(p => {
+        const winnersList = p.winners.map(w => w.name).join('; ');
+        const winnersEscaped = winnersList.replace(/"/g, '""');
+        return `${p.year},${p.category},${p.dateAwarded},${p.prizeAmount},"${winnersEscaped}"`;
+    });
+
+    const csvContent = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'nobel_prizes.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+async function fetchStats() {
+    // Only fetch if we haven't already (or add a refresh button later)
+    if (categoryChart) return; 
+
+    showLoading(true);
+    try {
+        const res = await fetch(STATS_URL);
+        const data = await res.json();
+        renderStats(data);
+    } catch (error) {
+        console.error('Error fetching stats:', error);
+    } finally {
+        showLoading(false);
+    }
+}
+
+function renderStats(stats) {
+    document.getElementById('stat-total-prizes').innerText = stats.totalPrizes;
+    document.getElementById('stat-total-laureates').innerText = stats.totalLaureates;
+    document.getElementById('stat-avg-amount').innerText = stats.averagePrizeAmount.toLocaleString() + ' SEK';
+
+    const ctx = document.getElementById('categoryChart').getContext('2d');
+    
+    // Destroy old chart if exists (though we check null above)
+    if (categoryChart) categoryChart.destroy();
+
+    categoryChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(stats.prizesByCategory),
+            datasets: [{
+                label: 'Prizes Awarded',
+                data: Object.values(stats.prizesByCategory),
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        }
+    });
 }
 
 function renderPrizes(prizes) {

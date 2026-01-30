@@ -9,6 +9,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-light">
 
@@ -24,49 +26,120 @@
     <!-- Main Content -->
     <div class="container py-5">
         
-        <!-- Search & Filter Section -->
-        <div class="row mb-5 justify-content-center">
-            <div class="col-lg-10">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body p-4">
-                        <h4 class="card-title mb-4 text-center font-serif">Find Laureates</h4>
-                        <form id="filterForm" class="row g-3">
-                            <div class="col-md-4">
-                                <label for="year" class="form-label">Year</label>
-                                <input type="number" class="form-control" id="year" placeholder="e.g. 2023" min="1901">
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-pills justify-content-center mb-4" id="viewTabs">
+            <li class="nav-item">
+                <button class="nav-link active" id="prizes-tab" data-bs-toggle="pill" data-bs-target="#prizes-view" type="button">Prizes</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="stats-tab" data-bs-toggle="pill" data-bs-target="#stats-view" type="button">Statistics</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="viewTabsContent">
+            
+            <!-- Prizes View -->
+            <div class="tab-pane fade show active" id="prizes-view" role="tabpanel">
+                <!-- Search & Filter Section -->
+                <div class="row mb-5 justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body p-4">
+                                <h4 class="card-title mb-4 text-center font-serif">Find Laureates</h4>
+                                <form id="filterForm" class="row g-3">
+                                    <div class="col-md-4">
+                                        <label for="year" class="form-label">Year</label>
+                                        <input type="number" class="form-control" id="year" placeholder="e.g. 2023" min="1901">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="category" class="form-label">Category</label>
+                                        <select id="category" class="form-select">
+                                            <option value="">All Categories</option>
+                                            <option value="phy">Physics</option>
+                                            <option value="che">Chemistry</option>
+                                            <option value="med">Medicine</option>
+                                            <option value="lit">Literature</option>
+                                            <option value="peace">Peace</option>
+                                            <option value="eco">Economics</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-end gap-2">
+                                        <button type="submit" class="btn btn-nobel flex-grow-1 fw-bold">Search</button>
+                                        <button type="button" id="downloadCsvBtn" class="btn btn-outline-secondary" title="Download Results as CSV">⬇ CSV</button>
+                                    </div>
+                                </form>
                             </div>
-                            <div class="col-md-4">
-                                <label for="category" class="form-label">Category</label>
-                                <select id="category" class="form-select">
-                                    <option value="">All Categories</option>
-                                    <option value="phy">Physics</option>
-                                    <option value="che">Chemistry</option>
-                                    <option value="med">Medicine</option>
-                                    <option value="lit">Literature</option>
-                                    <option value="peace">Peace</option>
-                                    <option value="eco">Economics</option>
-                                </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Grid -->
+                <div id="results" class="row g-4">
+                    <!-- Cards will be injected here by JS -->
+                </div>
+            </div>
+
+            <!-- Statistics View -->
+            <div class="tab-pane fade" id="stats-view" role="tabpanel">
+                <div class="row g-4">
+                    <!-- Summary Cards -->
+                    <div class="col-md-4">
+                        <div class="card text-center h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Total Prizes Analyzed</h5>
+                                <p class="display-4 fw-bold text-nobel" id="stat-total-prizes">-</p>
                             </div>
-                            <div class="col-md-4 d-flex align-items-end">
-                                <button type="submit" class="btn btn-nobel w-100 fw-bold">Search Prizes</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Total Laureates</h5>
+                                <p class="display-4 fw-bold text-success" id="stat-total-laureates">-</p>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-muted">Avg Prize Amount</h5>
+                                <p class="display-6 fw-bold text-warning" id="stat-avg-amount">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts -->
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Prizes by Category</h5>
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Placeholder for future charts or info -->
+                     <div class="col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Analysis Info</h5>
+                                <p class="text-muted text-center mt-5">
+                                    Statistics based on the latest 100 entries retrieved from the API.
+                                    Use the filtering options in the future to customize this view!
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            
         </div>
 
         <!-- Loading Spinner -->
-        <div id="loading" class="text-center d-none">
+        <div id="loading" class="text-center d-none mt-5">
             <div class="spinner-border text-nobel" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="mt-2 text-muted">Fetching Nobel history...</p>
-        </div>
-
-        <!-- Results Grid -->
-        <div id="results" class="row g-4">
-            <!-- Cards will be injected here by JS -->
+            <p class="mt-2 text-muted">Fetching data...</p>
         </div>
 
     </div>
