@@ -2,6 +2,14 @@
 
 A robust solution for interacting with the Nobel Prize API, featuring a REST API Wrapper, a Web Dashboard, and a CLI Analytics Tool.
 
+## Table of Contents
+*   [Getting Started](#getting-started)
+*   [Web Server & Dashboard](#web-server--dashboard)
+*   [Analytics CLI Tool](#analytics-cli-tool)
+*   [Configuration](#configuration)
+*   [Tech Stack](#tech-stack)
+*   [Performance & Caching](#performance--caching)
+
 ##  Getting Started
 
 ### Prerequisites
