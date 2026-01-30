@@ -14,11 +14,7 @@ const analyzeData = async () => {
     if (config.year) params.nobelPrizeYear = config.year;
     if (config.category) params.nobelPrizeCategory = config.category;
     
-    // Always fetch a decent amount for analysis if not specified, 
-    // but the API defaults to 25. Let's try to fetch more if analyzing, 
-    // or just respect the filter.
-    // If no specific filters, maybe we want a broader dataset? 
-    // For now, we trust the user filters or default API behavior.
+    // Always fetch a decent amount for analysis if not specified.
     if (!config.year && !config.category) {
         params.limit = 100; // Fetch more data for general analysis
     }
@@ -55,7 +51,7 @@ const analyzeData = async () => {
     }
 
     // 4. Visualize (Console Output)
-    console.log('\n--- 📊 Analysis Report ---');
+    console.log('\n---  Analysis Report ---');
     console.log(`Total Prizes Analyzed: ${stats.totalPrizes}`);
     console.log(`Total Laureates:       ${stats.totalLaureates}`);
     console.log(`Average Prize Amount:  ${stats.averagePrizeAmount.toLocaleString()} SEK`);

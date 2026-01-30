@@ -2,7 +2,7 @@
 
 A robust solution for interacting with the Nobel Prize API, featuring a REST API Wrapper, a Web Dashboard, and a CLI Analytics Tool.
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Node.js (v14+)
@@ -26,7 +26,7 @@ A robust solution for interacting with the Nobel Prize API, featuring a REST API
 
 ---
 
-## 🖥️ Web Server & Dashboard
+##  Web Server & Dashboard
 
 Start the Express server to access the API and the GUI.
 
@@ -39,7 +39,7 @@ npm start
 
 ---
 
-## 📊 Analytics CLI Tool
+##  Analytics CLI Tool
 
 We provide a dedicated script for fetching, analyzing, and storing Nobel Prize data.
 
@@ -76,7 +76,7 @@ The script will:
 
 ---
 
-## ⚙️ Configuration
+##  Configuration
 
 You can configure the application via `.env` variables or `config/default.json`.
 
@@ -88,7 +88,7 @@ You can configure the application via `.env` variables or `config/default.json`.
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 *   **Core:** Node.js, Express
 *   **CLI:** Yargs
 *   **Logging:** Winston
